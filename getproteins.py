@@ -21,7 +21,7 @@ with open(genbankfile) as f:
     for indx, seq_record in enumerate(SeqIO.parse(f, "genbank")):
         header=str(seq_record.id)
         print header
-        f2=open('%s/fastas/%s.fasta'%(filepath,header),'w')
+        f2=open('%s/fastas/%s.fasta'%(outputpath,header),'w')
         pseudocounter=0
         genecounter=0
         skippedgenemissingidcounter=0
@@ -91,9 +91,9 @@ with open(genbankfile) as f:
         f2.close()
         skippedgenecounter=skippedgenemissingidcounter+skippedgenemissingtranslationcounter
         f3.write('%s\t%s\t%s\t%s\t%s\t%s\n'%(header,pseudocounter,genecounter,genecounter-skippedgenecounter,skippedgenemissingidcounter,skippedgenemissingtranslationcounter))
-        fastafilepath='%s/fastas/%s.fasta'%(filepath,header)
+        fastafilepath='%s/fastas/%s.fasta'%(outputpath,header)
         f4.write('%s\t%s\n'%(header,fastafilepath))
-        blastdbfilepath='%s/fastas/%s_db'%(filepath,header)
+        blastdbfilepath='%s/fastas/%s_db'%(outputpath,header)
         f5.write('%s\t%s\n'%(header,blastdbfilepath))
 f3.close()
 f4.close()

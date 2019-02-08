@@ -1,0 +1,42 @@
+getproteins.py  extract proteins (include genome and strand inforamtion); produces a fasta file of proteins per geneome
+makeblastdbs.sh  concatenate fasta files to produce allfastas.fasta; make blast database for each individual fasta
+runblast.sh  query allfastas.fasta against each individual sample datadase
+reformatblast.sh  filter hits according to pid/coverage threshold; output allalignments.tsv
+getreciprocalhits.R  filter so only reciprocal best hits remain
+getbreakpointdistance.R  split data by sample1/sample2 columns (1 split per pairwise comparison); order, while retaining a row index; can then caluclate breakpoint distance
+
+#TO DO
+in gthe README.md, explain how reciprocal best hits are detected (need to ensure a hit is named the same to be identified as reciprocal)
+
+#NOTES
+
+for protein extraction see
+
+https://warwick.ac.uk/fac/sci/moac/people/students/peter_cock/python/genbank/
+https://www.biostars.org/p/230441/
+https://stackoverflow.com/questions/23333123/extracting-cds-sequences-in-biopython
+
+calculating percent differenfe:
+https://www.omnicalculator.com/math/percentage-difference#how-to-calculate-percent-difference
+
+blast options':
+https://www.biostars.org/p/116338/
+https://www.ncbi.nlm.nih.gov/pubmed/18042555
+
+!problem - no strand infpormation so can't use this in breakpoint calculation
+need to extract strand information from genbank https://warwick.ac.uk/fac/sci/moac/people/students/peter_cock/python/genbank/
+"As you can see, this entry is for a CDS feature (use .type), and its location is given as complement(7398..8423) in the GenBank file (one based counting). BioPython uses the notation of a +1 and -1 strand for the forward and reverse/complement strands (use .strand), while this location (use .location) is held as 7397 to 8423 (zero based counting) to make it easy to use sequence splicing."
+
+
+
+###Existing software for orthology/breakpoint distance
+
+N.B tried to install grappa which can calculate breakpoint distance from signed permutation - but insallation fails (makefile problem); no installation instructions
+https://www.cs.unm.edu/~moret/GRAPPA/
+
+
+N.B blast_rbh.py script from https://github.com/peterjc/galaxy_blast/tree/master/tools/blast_rbh used to get pairwise RBH hits; but wth 435 comparisons required among 30 genomes and ~45 secs per compairons this works out at ~5.5hrs for the job with 20 threads (no evalue threshold; creating blast databases individually means recreation of blast databases). Use the test result to qc my own RBH output.
+The executable is located in ~/galaxy_blast-master/tools/blast_rbh; see also (the blast_rbh.xml file):
+https://toolshed.g2.bx.psu.edu/repository/display_tool?repository_id=d5dd1c5d2070513e&tool_config=database%2Fcommunity_files%2F001%2Frepo_1040%2Ftools%2Fblast_rbh%2Fblast_rbh.xml&changeset_revision=ff0b814c1320
+Cited once: https://peerj.com/articles/3134/
+

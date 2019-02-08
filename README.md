@@ -1,4 +1,4 @@
-metamorth is a command-line tool for identifying [orthologs](https://en.wikipedia.org/wiki/Sequence_homology#Orthology) amongst pairs of bacterial genomes, and calculating re-arrangement distances, according to the pairwise ordering of orthologs. The [reciprocal best hit approach](https://www.ncbi.nlm.nih.gov/pubmed/23160176) is used to identify hypothetical orthologs between genomes, whilst breakpoint distance is calculated as a [re-arrangement distance metric](https://cse.sc.edu/~jtang/mage.pdf). metamorth performas an all-vs-all comparison (i.e. orthologs/breakpoint distances are determined for each pair of genomes).
+metamorth is a command-line tool for identifying [orthologs](https://en.wikipedia.org/wiki/Sequence_homology#Orthology) amongst pairs of bacterial genomes, and calculating re-arrangement distances, according to the pairwise ordering of orthologs. The [reciprocal best hit approach](https://www.ncbi.nlm.nih.gov/pubmed/23160176) is used to identify hypothetical orthologs between genomes, whilst breakpoint distance is calculated as a [re-arrangement distance metric](https://cse.sc.edu/~jtang/mage.pdf). metamorth performs an all-vs-all comparison (i.e. orthologs/breakpoint distances are determined for each pair of genomes).
 
 
 # Table of contents
@@ -30,7 +30,7 @@ As input, metamorth can be provided with one of the following:
 * Linux or MacOS (with the [Bash shell](https://en.wikibooks.org/wiki/Bash_Shell_Scripting#What_is_Bash?), which is the default shell on MacOS and many Linux distributions)
 * [Python](https://www.python.org/) 2.7 or Python 3
 * [SeqKit](https://github.com/shenwei356/seqkit)
-* [BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/) (`blastn`)
+* [BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/) (`blastp`)
 * [GNU Parallel](https://www.gnu.org/software/parallel/)
 * [R](https://www.r-project.org/) 3.3.1 or later with the following packages installed:
     * [GenomicRanges](https://bioconductor.org/packages/release/bioc/html/GenomicRanges.html); [gsubfn](https://cran.r-project.org/web/packages/gsubfn/index.html); [foreach](https://cran.r-project.org/web/packages/foreach/index.html); [doParallel](https://cran.r-project.org/web/packages/doParallel/index.html); [data.table](https://cran.r-project.org/web/packages/data.table/index.html); [tidyr](https://cran.r-project.org/web/packages/tidyr/index.html)<br>
@@ -90,9 +90,9 @@ The complete pipeline (protein extraction, ortholog determination, breakpoint di
 Further general information about ortholog detection can be found in a recent [paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5674930/) by Nichio _et al_. A brief outline of the steps of the complete metamorth pipeline is given below:
 
 1. Translated protein sequences are extracted from a Genbank file containing annotated nucleotide sequences of genomes. In addition, the nucleotide position of the corresponding coding sequence, and the strand (+ve/-ve) of the translated protein sequence are extracted.
-2. BLAST is conducted between the sets of protein sequences, in both directions, between each pair of genomes (i.e. genome A proteins vs genome B proteins and genome B proteins vs genome A proteins). For each protein, only the best hit across all proteins in the other genome is retained, and only if this hit satisfies identity and coverage thresholds (default: at least 40% protein sequence identity and at least 80% query coverage).
+2. BLAST is conducted between the sets of protein sequences from each pair of genomes, in both BLAST directions (i.e. genome A proteins vs genome B proteins and genome B proteins vs genome A proteins). For each protein, only the best hit across all proteins in the other genome is retained, and only if this hit satisfies identity and coverage thresholds (default: at least 40% protein sequence identity and at least 80% query coverage).
 3. The remaining BLAST hits are further filtered, retaining hits only if they are reciprocal best hits.
-4. The reciprocal best hits (candidate orthologs) are ordered by nucleotide start position, generating a [signed permutation](http://rosalind.info/glossary/signed-permutation/) for each genome in a given pairwise comparison (i.e. an ordered sequence of numbers, associated with +/- signs, representing orthologs and their strand). From these signed permutations, a [breakpoint distance](https://www.liebertpub.com/doi/abs/10.1089/cmb.1998.5.555) is calculated and expressed as number of breakpoints / number of shared orthologs.
+4. The reciprocal best hits (candidate orthologs) are ordered by nucleotide start position, generating a [signed permutation](http://rosalind.info/glossary/signed-permutation/) for each genome in a given pairwise comparison (i.e. a sequence of numbers, associated with +/- signs, representing the ordered orthologs and their strand). From these signed permutations, a [breakpoint distance](https://www.liebertpub.com/doi/abs/10.1089/cmb.1998.5.555) is calculated and expressed as number of breakpoints / number of shared orthologs.
 
 
 
