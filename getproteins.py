@@ -60,8 +60,15 @@ with open(genbankfile) as f:
                         protname='-'
 
                     strand=feature.strand
-                    start=int(feature.location.start)
-                    end=int(feature.location.end)                    
+                    if len(feature.location.parts)>1:
+                        firstlocation=feature.location.parts[0]
+                        start=int(firstlocation.start)
+                        end=int(firstlocation.end)
+                    else:
+                        start=int(feature.location.start)
+                        end=int(feature.location.end)
+                    start=start+1 #make locations 1-based
+                    end=end+1
                     #protnuclseq=feature.location.extract(seq_record).seq
                     #try:
                     #    protseq1=protnuclseq.translate(table=11,cds=True)
