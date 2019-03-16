@@ -22,7 +22,7 @@ The reciprocal best hit approach is a widely used method to identify candidate o
 As input, metamorth can be provided with one of the following:
 
 * A Genbank file ([full format](https://widdowquinn.github.io/2018-03-06-ibioic/01-introduction/02-annotation.html), i.e. with gene locus information) comprising nucleotide sequences of the genomes that are to be compared. For details, see the [Input](#Input) section.
-* A file containing orthologs (calculated using the user's preferred method), formatted as described in [Input](#Input).
+* A file containing orthologs (determined using the user's preferred method), formatted as described in [Input](#Input).
 
 
 # Requirements
@@ -69,7 +69,7 @@ Alternatively, for newly sequenced genomes, annotation software can be run, with
 
 ### Best hit alignments / ortholog input
 
-If orthologs have already been determined, these can be provided directly to metamorth, and breakpoint distances can then be calculated. The ortholog input file must be formatted as in the example file contained in the /example folder. There should be 2 columns of data representing reciprocal hits in the format: genome_id|protein_id|strand|nucleotide_position. If orthologs have not been determined, but best hits have been determined, then these hits can be provided, following the same formatting rules; metamorth ensures only reciprocal best hits (candidate orthologs) are retained.
+If orthologs have already been determined, these can be provided directly to metamorth, and breakpoint distances can then be calculated. The ortholog input file must be formatted as in the example file contained in the /example folder. There should be 2 columns of data representing reciprocal hits in the format: genome_id|protein_id|strand|nucleotide_position. A header row at the top must be present, providing a name for each column (there is no rule about how the columns should be named). If orthologs have not been determined, but best hits have been determined, then these hits can be provided, following the same formatting rules; metamorth ensures only reciprocal best hits (candidate orthologs) are retained.
 
 
 # Quick start
@@ -89,7 +89,7 @@ The complete pipeline (protein extraction, ortholog determination, breakpoint di
 
 Further general information about ortholog detection can be found in a recent [paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5674930/) by Nichio _et al_. A brief outline of the steps of the complete metamorth pipeline is given below:
 
-1. Translated protein sequences are extracted from a Genbank file containing annotated nucleotide sequences of genomes. In addition, the nucleotide position of the corresponding coding sequence, and the strand (+ve/-ve) of the translated protein sequence are extracted. For [compound locations](http://biopython.org/DIST/docs/tutorial/Tutorial.html#htoc39) the first location position is used.
+1. Translated protein sequences are extracted from a Genbank file containing annotated nucleotide sequences of genomes. In addition, the nucleotide position of the corresponding coding sequence, and the strand (+ve/-ve) of the translated protein sequence are extracted.
 2. BLAST is conducted between the sets of protein sequences from each pair of genomes, in both BLAST directions (i.e. genome A proteins vs genome B proteins and genome B proteins vs genome A proteins). For each protein, only the best hit across all proteins in the other genome is retained, and only if this hit satisfies identity and coverage thresholds (default: at least 40% protein sequence identity and at least 80% query coverage).
 3. The remaining BLAST hits are further filtered, retaining hits only if they are reciprocal best hits.
 4. The reciprocal best hits (candidate orthologs) are ordered by nucleotide start position, generating a [signed permutation](http://rosalind.info/glossary/signed-permutation/) for each genome in a given pairwise comparison (i.e. a sequence of numbers, associated with +/- signs, representing the ordered orthologs and their strand). From these signed permutations, a [breakpoint distance](https://www.liebertpub.com/doi/abs/10.1089/cmb.1998.5.555) is calculated and expressed as number of breakpoints / number of shared orthologs.

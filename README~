@@ -6,7 +6,9 @@ getreciprocalhits.R  filter so only reciprocal best hits remain
 getbreakpointdistance.R  split data by sample1/sample2 columns (1 split per pairwise comparison); order, while retaining a row index; can then caluclate breakpoint distance
 
 #TO DO
-in gthe README.md, explain how reciprocal best hits are detected (need to ensure a hit is named the same to be identified as reciprocal)
+in the README.md, explain how reciprocal best hits are detected (need to ensure a hit is named the same to be identified as reciprocal)
+need to complete the options and usage section
+
 
 #NOTES
 

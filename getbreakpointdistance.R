@@ -49,15 +49,20 @@ orthologBP<-function(splitdf) {
   return(c(splitnames,bpdist,breakpoints,genes))
 }
 
+reorderdf<-function(df) { #sort query/subject genomes alphabetically'; assign qcov=NA accordingly                                                                                                           
+  ordervec<-order(df[c(1,2)])
+  df[c(1,2)]<-df[ordervec]
+  return(df)
+}
+
 ###
 
-
-#read in reciprocal best hits file (either calculated by metamorth or user-provided)
+#read in (reciprocal) best hits file (either calculated by metamorth or user-provided)
 if (as.character(args[3])=='metamorth') {
-   report<-fread(gsubfn('%1',list('%1'=args[1]),'%1/blast/allalignments_RBH.tsv'),sep='\t',header=TRUE)
-} else {
-   report<-fread(gsubfn('%1',list('%1'=args[4]),'%1'),sep='\t',header=FALSE)
-   #order margin 1                                                                                                                                                                                             
+   report<-fread(gsubfn('%1',list('%1'=args[1]),'%1/blast/allalignments_RBH.tsv'),select=1:8,sep='\t',header=TRUE)
+} else { #read in best hits file; run getreciprocalhits code in case hits haven't been filtered to select reciprocal-only hits
+   report<-fread(gsubfn('%1',list('%1'=args[4]),'%1'),select=c(1,2),sep='\t',header=TRUE) #header=TRUE/no header provided is less problematic than header=FALSE/header provided
+   #order margin 1                                         
    report<-as.data.frame(t(apply(report,1,sort)),stringsAsFactors = FALSE)
    colnames(report)<-c('sample1','sample2')
 
@@ -66,8 +71,8 @@ if (as.character(args[3])=='metamorth') {
    split2<-as.data.frame(separate(report,sample2,into=c("sample2", "sample2protein","sample2strand","sample2position"),sep="\\|"))[,c(2:5)]
    report<-data.frame(split1,split2)
 
-   #order by column 1 and column 2                                                                                                                                                                             
-   report2<-report[with(report, order(report$sample1,report$sample2)),]
+   #order columnwise; sample1 hit / sample2 hit                                                                                                                                                                
+   report2<-report[with(report, order(report$sample1,report$sample2,report$sample1position,report$sample2position)),]
 
    #remove non-duplicate rows (non-reciprocal hits)                                                                                                                                                            
    report3<-report2[duplicated(report2) | duplicated(report2, fromLast=TRUE),]

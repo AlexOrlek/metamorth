@@ -18,7 +18,7 @@ do
     sample="${line[0]}"
     database="${line[1]}"
     blastoutput="${1}/blast/${sample}_alignments.tsv"
-    cat ${query} | seqkit grep -r -p ^${sample} -v  | blastp -db ${database} -out ${blastoutput} -outfmt '6 qseqid sseqid pident qcovhsp qlen slen' -task 'blastp' -num_threads ${threads} -max_target_seqs '1' -max_hsps '1' -evalue ${evalue}
+    cat ${query} | seqkit grep -r -p ^${sample} -v  | blastp -db ${database} -out ${blastoutput} -outfmt '6 qseqid sseqid pident evalue bitscore qcovhsp qlen slen' -task 'blastp' -num_threads ${threads} -max_target_seqs '1' -max_hsps '1' -evalue ${evalue}
 done < ${blastdbfilepaths}
 
 

@@ -19,8 +19,9 @@ f5=open('%s/blastdbfilepaths.tsv'%outputpath,'w')
 
 with open(genbankfile) as f:
     for indx, seq_record in enumerate(SeqIO.parse(f, "genbank")):
+        sequencelen=len(seq_record.seq)
         header=str(seq_record.id)
-        print header
+        #print header
         f2=open('%s/fastas/%s.fasta'%(outputpath,header),'w')
         pseudocounter=0
         genecounter=0
@@ -60,10 +61,15 @@ with open(genbankfile) as f:
                         protname='-'
 
                     strand=feature.strand
+
                     if len(feature.location.parts)>1:
-                        firstlocation=feature.location.parts[0]
-                        start=int(firstlocation.start)
-                        end=int(firstlocation.end)
+                        start=int(feature.location.start)
+                        end=int(feature.location.end)
+                        genelen=(end-start)+1
+                        if genelen==sequencelen: #occurs if a gene from a circular molecular is split when representing the sequence as linear
+                          firstlocation=feature.location.parts[0]
+                          start=int(firstlocation.start)
+                          end=int(firstlocation.end)
                     else:
                         start=int(feature.location.start)
                         end=int(feature.location.end)
