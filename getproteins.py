@@ -91,7 +91,7 @@ with open(genbankfile) as f:
                     assert len(protseq2)==1, "there are multiple translations associated with feature"
                     protseq2=Seq(protseq2[0])
                     #assert protseq1==protseq2,"there is a disagreement between translated nucleotide sequence and provided translated protein sequence"
-                    print '%s|%s protein:%s gene:%s'%(header,protid, protname, genename)
+                    #print '%s|%s protein:%s gene:%s'%(header,protid, protname, genename)
                     #print protseq2
                     
                     #make sequence record and write to file
