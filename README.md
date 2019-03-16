@@ -69,7 +69,7 @@ Alternatively, for newly sequenced genomes, annotation software can be run, with
 
 ### Best hit alignments / ortholog input
 
-If orthologs have already been determined, these can be provided directly to metamorth, and breakpoint distances can then be calculated. The ortholog input file must be formatted as in the example file contained in the /example folder. There should be 2 columns of data representing reciprocal hits in the format: genome_id|protein_id|strand|nucleotide_position. A header row at the top must be present, providing a name for each column (there is no rule about how the columns should be named). If orthologs have not been determined, but best hits have been determined, then these hits can be provided, following the same formatting rules; metamorth ensures only reciprocal best hits (candidate orthologs) are retained.
+If orthologs have already been determined, these can be provided directly to metamorth, and breakpoint distances can then be calculated. The ortholog input file must be formatted as in the example file contained in the /example folder. There should be 2 columns of data representing reciprocal hits in the format: genome_id|protein_id|strand|nucleotide_position. If orthologs have not been determined, but best hits have been determined, then these hits can be provided, following the same formatting rules; metamorth ensures only reciprocal best hits (candidate orthologs) are retained. A header row at the top of the input file must be present, providing a name for each column (there is no rule about how the columns should be named).
 
 
 # Quick start
