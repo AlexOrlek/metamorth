@@ -11,6 +11,7 @@ metamorth is a command-line tool for identifying [orthologs](https://en.wikipedi
 * [Background and methods](#Background-and-methods)
 * [Options and usage](#Options-and-usage)
 * [Output files](#Output-files)
+* [FAQ](#faq)
 * [License](#License)
 
 
@@ -113,6 +114,13 @@ blast/allalignments_RBH.tsv  | reciprocal best BLAST hits (candidate orthologs) 
 output/                      | directory containing the breakpointdistance.tsv file (pairwise breakpoint distances)
 included.txt                 | file showing names of genomes included in the analysis (any genome sharing at least 1 reciprocal best hit with another genome)
 
+
+# FAQ
+
+* **Can metamorth be applied to eukaryotic genomes?**
+You can use metamorth to determine pairwise reciprocal blast hits amongst eukaryotic genomes. However, it is not recommended to use metamorth to calculate breakpoint distances for eukaryotic genomes. To accommodate eukaryotic genomes, where gene duplication is more common, the breakpoint definition would need to be adapted; for eukaryotic comparisons, pairs of genes that are in approximately, but not exactly, the same order would not be counted as a breakpoint (see [Rocha 2005](https://academic.oup.com/mbe/article/23/3/513/1110176)).
+* **How does metamorth handle compound locations?**
+[Compound locations](http://biopython.org/DIST/docs/tutorial/Tutorial.html#htoc39) are locations in the Genbank file that comprise multiple parts. This may be because a gene comprises mutliple exons (e.g. in eukaryotic genomes); in this case, the location coordinates extracted by metamorth will be the start/end positions of the gene. When dealing with circular genomes, occasionally, the linear sequence assembly may have split a gene in two. As an example, see Refseq accession NZ_CP026210.1, which can be found on [NCBI nucleotide](https://www.ncbi.nlm.nih.gov/nucleotide/); the gene encoding the protein WP_004187323.1 is split; the start and end position of the gene are 1 and 76261 respectively - this is the length of the complete sequence. In this case, the location coordinates extracted by metamorth will be the start/end positions of the first compound location part.
 
 
 # License

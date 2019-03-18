@@ -61,11 +61,10 @@ with open(genbankfile) as f:
                         protname='-'
 
                     strand=feature.strand
-
                     if len(feature.location.parts)>1:
                         start=int(feature.location.start)
                         end=int(feature.location.end)
-                        genelen=(end-start)+1
+                        genelen=(end-start) #start/end is 0-based
                         if genelen==sequencelen: #occurs if a gene from a circular molecular is split when representing the sequence as linear
                           firstlocation=feature.location.parts[0]
                           start=int(firstlocation.start)
@@ -73,8 +72,7 @@ with open(genbankfile) as f:
                     else:
                         start=int(feature.location.start)
                         end=int(feature.location.end)
-                    start=start+1 #make locations 1-based
-                    end=end+1
+                    start=start+1 #make location coordinates 1-based; converting from 0-based sytem with half-closed, half-open intervals to 1-based system with closed intervals
                     #protnuclseq=feature.location.extract(seq_record).seq
                     #try:
                     #    protseq1=protnuclseq.translate(table=11,cds=True)
@@ -111,3 +109,21 @@ with open(genbankfile) as f:
 f3.close()
 f4.close()
 f5.close()
+
+
+
+
+                    # ###testing
+                    # if 'NZ_CP009868.1' in header:
+                    #     print(len(feature.location.parts),'len parts')
+                    #     start=int(feature.location.start)
+                    #     end=int(feature.location.end)
+                    #     genelen=(end-start)
+                    #     print(start,end,genelen,sequencelen,'start,end,genelen,seqlen')
+                    #     firstlocation=feature.location.parts[0]
+                    #     start=int(firstlocation.start)
+                    #     end=int(firstlocation.end)
+                    #     print(start,end,'start,end first loc')
+                    #     sys.exit()
+
+                    # ###
