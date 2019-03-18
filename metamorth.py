@@ -29,21 +29,21 @@ if args.sequences==None and args.reciprocalhits==None:
 
 if args.sequences!=None:
     runsubprocess(['python','%s/getproteins.py'%sourcedir,outputpath, str(args.sequences)])  
-    #runsubprocess(['bash','%s/makeblastdbs.sh'%sourcedir,outputpath, str(args.threads), sourcedir])
-    #runsubprocess(['bash','%s/runblast.sh'%sourcedir,outputpath, str(args.evalue),str(args.threads)])
-    #runsubprocess(['bash','%s/reformatblast.sh'%sourcedir,outputpath,str(args.pident),str(args.qcovhsp)])
-    #runsubprocess(['Rscript','%s/getreciprocalhits.R'%sourcedir,outputpath])
+    runsubprocess(['bash','%s/makeblastdbs.sh'%sourcedir,outputpath, str(args.threads), sourcedir])
+    runsubprocess(['bash','%s/runblast.sh'%sourcedir,outputpath, str(args.evalue),str(args.threads)])
+    runsubprocess(['bash','%s/reformatblast.sh'%sourcedir,outputpath,str(args.pident),str(args.qcovhsp)])
+    runsubprocess(['Rscript','%s/getreciprocalhits.R'%sourcedir,outputpath])
 
     if args.breakpoint==True:
         rbhinput='metamorth'
-        #runsubprocess(['Rscript','%s/getbreakpointdistance.R'%sourcedir,outputpath,str(args.threads),rbhinput])
+        runsubprocess(['Rscript','%s/getbreakpointdistance.R'%sourcedir,outputpath,str(args.threads),rbhinput])
 
 else:
     if args.breakpoint==True:
         rbhinput='userprovided'
-        #runsubprocess(['mkdir -p %s/blast'%outputpath],shell=True)
-        #runsubprocess(['mkdir -p %s/output'%outputpath],shell=True)
-        #runsubprocess(['Rscript','%s/getbreakpointdistance.R'%sourcedir,outputpath,str(args.threads),rbhinput,str(args.reciprocalhits)])
+        runsubprocess(['mkdir -p %s/blast'%outputpath],shell=True)
+        runsubprocess(['mkdir -p %s/output'%outputpath],shell=True)
+        runsubprocess(['Rscript','%s/getbreakpointdistance.R'%sourcedir,outputpath,str(args.threads),rbhinput,str(args.reciprocalhits)])
 
         
 
