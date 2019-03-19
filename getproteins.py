@@ -34,7 +34,7 @@ with open(genbankfile) as f:
             for feature in seq_record.features:
                 if feature.type=="CDS":
                     if 'pseudo' in feature.qualifiers or 'pseudogene' in feature.qualifiers: #'product' not in
-                        print('gene is pseudogene')
+                        #print('gene is pseudogene')
                         pseudocounter=pseudocounter+1
                         continue
                     genecounter=genecounter+1

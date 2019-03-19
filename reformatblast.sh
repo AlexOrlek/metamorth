@@ -10,13 +10,13 @@ pidcutoff=${2}
 qcovcutoff=${3}
 
 > ${1}/blast/allalignments.tsv
-echo -e "qseqid\tsseqid\tpident\tevalue\tbitscore\tqcovhsp\tqlen\tslen" >> ${1}/blast/allalignments.tsv 
+echo -e "qseqid\tsseqid\tpident\tlength\tmismatch\tgapopen\tqstart\tqend\tsstart\tsend\tevalue\tbitscore\tqcovhsp\tqlen\tslen" >> ${1}/blast/allalignments.tsv 
 #reformat blast output file                                                                                                                
 samples=($(cut -f1 ${outdir}/blastdbfilepaths.tsv | sort -V | uniq)) #$subject sequence blast database file; format: sample \t filepath to database
 
 for sample in ${samples[@]}; do
     mkdir -p ${outdir}/blast/${sample}
-    cat ${outdir}/blast/${sample}_alignments.tsv | awk -v "var1=${pidcutoff}" -v "var2=${qcovcutoff}" '$3 >= var1 && $6 >= var2' | tee ${outdir}/blast/${sample}/alignments.tsv >> ${outdir}/blast/allalignments.tsv #percent identity >=40% ; hsp query coverage >= 80%
+    cat ${outdir}/blast/${sample}_alignments.tsv | awk -v "var1=${pidcutoff}" -v "var2=${qcovcutoff}" '$3 >= var1 && $13 >= var2' | tee ${outdir}/blast/${sample}/alignments.tsv >> ${outdir}/blast/allalignments.tsv #percent identity >=40% ; hsp query coverage >= 80%
     rm ${outdir}/blast/${sample}_alignments.tsv
 done
 

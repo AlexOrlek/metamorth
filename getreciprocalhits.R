@@ -7,9 +7,9 @@ library(tidyr)
 reorderdf<-function(df) { #sort query/subject genomes alphabetically'; assign qcov=NA accordingly
   ordervec<-order(df[c(1,2)])
   df[c(1,2)]<-df[ordervec]
-  df[c(7,8)]<-df[ordervec+6]
+  #df[c(7,8)]<-df[ordervec+6] #swap qlen/slen if alphabetic sort has occurred
   if (ordervec[1]==2) { #if alphabetic re-ordering has taken place; assign qcov to NA
-    df[6]<-NA
+    df[13]<-NA
   }
   return(df)
 }
@@ -17,17 +17,17 @@ reorderdf<-function(df) { #sort query/subject genomes alphabetically'; assign qc
 
 report<-fread(gsubfn('%1',list('%1'=args[1]),'%1/blast/allalignments.tsv'),sep='\t',header=TRUE) #select=c(1,2)
 
-#order margin 1 (rowwise) qseqid/sseqid; replace qcovhsp with NA accordingly (if alphabetic sort has occurred so query coverage is unknown); swap qlen/slen if alphabetic sort has occurred
+#order margin 1 (rowwise) qseqid/sseqid; replace qcovhsp with NA accordingly (if alphabetic sort has occurred so query coverage is unknown)
 report<-as.data.frame(t(apply(report,1,reorderdf)))
-colnames(report)<-c('sample1','sample2','pident','evalue','bitscore','qcovhsp','qlen','slen')
+colnames(report)<-c('qseqid','sseqid','pident','length','mismatch','gapopen','qstart','qend','sstart','send','evalue','bitscore','qcovhsp','qlen','slen')
 
 #ordering below doesn't work (not sure why); solved by splitting data prior to ordering
-split1<-as.data.frame(separate(report,sample1,into=c("sample1", "sample1protein","sample1strand","sample1position"),sep="\\|"))[,c(1:4)]
-split2<-as.data.frame(separate(report,sample2,into=c("sample2", "sample2protein","sample2strand","sample2position"),sep="\\|"))[,c(2:5)]
+split1<-as.data.frame(separate(report,qseqid,into=c("qseqid", "qseqprot","qseqprotstrand","qseqprotposition"),sep="\\|"))[,c(1:4)]
+split2<-as.data.frame(separate(report,sseqid,into=c("sseqid", "sseqprot","sseqprotstrand","sseqprotposition"),sep="\\|"))[,c(2:5)]
 report<-data.frame(split1,split2,report[,3:ncol(report)])
 
-#order columnwise; sample1 hit / sample2 hit
-report2<-report[with(report, order(report$sample1,report$sample2,report$sample1position,report$sample2position)),]
+#order columnwise; qseq hit / sseq hit
+report2<-report[with(report, order(report$qseqid,report$sseqid,report$qseqprotposition,report$sseqprotposition)),]
 
 #remove non-duplicate rows (non-reciprocal hits); only order based on columns 1:8 not evalue/bitscore etc (may depend on blast directionality)
 report3<-report2[duplicated(report2[,1:8]) | duplicated(report2[,1:8], fromLast=TRUE),]
