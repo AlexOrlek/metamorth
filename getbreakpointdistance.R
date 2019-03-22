@@ -2,17 +2,21 @@ args = commandArgs(trailingOnly=TRUE)
 library(GenomicRanges)
 library(gsubfn)
 library(data.table)
+library(tidyr)
 
 
 ###ortholog breakpoint function - takes reciprocal best hits file that has been split by pairwise comparison; outputs genome names and bpdiststats
 
 #pre-requisite functions
 makepairs<-function(x) mapply(c, head(x,-1), tail(x,-1), SIMPLIFY = FALSE)
-BP<-function(x,y) { #this function works on signed permuations (numeric vectors with +/- indicated)                                         
-  out1<-makepairs(x)[!(makepairs(x) %in% makepairs(y) | makepairs(x) %in% makepairs(rev(y*-1)))]
-  out2<-makepairs(x)[unlist(lapply(makepairs(x), function(z) length(unique(sign(z)))))>1]
-  all<-c(out1,out2)
-  return(all[!duplicated(all)]) #deduplicate to aovid double counting breakpoints that occur in out1 and out2                               
+BP<-function(x,y) { #this function works on signed permuations (numeric vectors with +/- indicated)
+  #N.B out1 out2 are used for alignment permutations where + - indicates an inversion breakpoint, but for gene data, as long as + - is the permutation in both sequences this is not an inversion breakpoint
+  #out1<-makepairs(x)[!(makepairs(x) %in% makepairs(y) | makepairs(x) %in% makepairs(rev(y*-1)))]
+  #out2<-makepairs(x)[unlist(lapply(makepairs(x), function(z) length(unique(sign(z)))))>1]
+  #all<-c(out1,out2)
+  #return(all[!duplicated(all)]) #deduplicate to avoid double counting breakpoints that occur in out1 and out2
+  out<-makepairs(x)[!(makepairs(x) %in% makepairs(y) | makepairs(x) %in% makepairs(rev(y*-1)))]
+  return(out)
 }
 
 #orthologBP function
